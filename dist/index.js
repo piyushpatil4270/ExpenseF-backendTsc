@@ -37,7 +37,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use((0, body_parser_1.default)({ extended: true }));
 app.get("/", (req, res, next) => {
-    res.json("server started....");
+    res.json("server started and we are live....");
 });
 app.get("/reset_password/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;

@@ -178,24 +178,28 @@ router.post("/getbyMonthGrouped", authenticate_1.authenticate, (req, res, next) 
         res.status(404).json("An error occured please try again");
     }
 }));
-router.post("/delete/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/delete/:id", authenticate_1.authenticate, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.user)
             return res.status(404).json("Your are not authorized");
+        const { id: expenseId } = req.params;
         const userId = req.user.id;
-        const expenseId = req.params.id;
-        const numberId = parseInt(expenseId);
-        const expense = yield expenses_1.default.findByPk(numberId);
-        const userExpense = expense === null || expense === void 0 ? void 0 : expense.toJSON();
-        yield (expense === null || expense === void 0 ? void 0 : expense.destroy());
-        const existingUser = yield user_1.default.findOne({ where: { id: userId } });
-        const user = existingUser === null || existingUser === void 0 ? void 0 : existingUser.toJSON();
-        user.totalExpenses -= userExpense.amount;
-        yield user.save();
-        res.status(202).json("Expense deleted successfully");
+        console.log(typeof expenseId);
+        const newId = parseInt(expenseId);
+        const expense = yield expenses_1.default.findOne({ where: { id: newId } });
+        if (expense) {
+            const amt = expense.toJSON().amount;
+            const user = yield user_1.default.findByPk(userId);
+            // @ts-ignore
+            user.totalAmount -= amt;
+            yield (user === null || user === void 0 ? void 0 : user.save());
+            yield expense.destroy();
+            return res.status(202).json("expense deleted");
+        }
+        res.status(202).json("expense not found");
     }
     catch (error) {
-        res.status(404).json("An error occured try again");
+        res.status(404).json(error);
     }
 }));
 exports.default = router;

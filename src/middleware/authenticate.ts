@@ -33,6 +33,7 @@ try {
         const existingUser=await Users.findOne({where:{id:userId}})
         if(!existingUser) return res.status(404).json("User doesnt exist")
         const user=existingUser.toJSON() as User
+        console.log("user is ",user)
         req.user=user
         next()
        

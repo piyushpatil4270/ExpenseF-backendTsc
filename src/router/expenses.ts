@@ -210,22 +210,26 @@ router.post("/getbyMonthGrouped",authenticate,async(req:CustomRequest,res:Respon
 router.post("/delete/:id",authenticate,async(req:CustomRequest,res:Response,next:NextFunction)=>{
     try {
         if(!req.user) return res.status(404).json("Your are not authorized")
-            const userId=req.user.id
-        const expenseId:string=req.params.id
-
-        const numberId:number=parseInt(expenseId)
-        const expense=await Expenses.findByPk(numberId)
-        const userExpense=expense?.toJSON()
-        await expense?.destroy()
-        const existingUser=await Users.findOne({where:{id:userId}})
-        const user=existingUser?.toJSON()
-         user.totalExpenses-=userExpense.amount
-         await user.save()
-         res.status(202).json("Expense deleted successfully")
-        
+            const { id: expenseId } = req.params;
+        const userId = req.user.id;
+        console.log(typeof expenseId)
+        const newId:number=parseInt(expenseId)
+        const expense = await Expenses.findOne(
+          { where: { id: newId} }
+        );
+        if (expense) {
+          const amt = expense.toJSON().amount;
+          const user = await Users.findByPk(userId);
+          // @ts-ignore
+           user.totalAmount-=amt
+          await user?.save()
+          await expense.destroy();
+          return res.status(202).json("expense deleted");
+        }
+        res.status(202).json("expense not found")
 
     } catch (error) {
-        res.status(404).json("An error occured try again")
+        res.status(404).json(error)
     }
 })
 

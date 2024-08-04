@@ -29,11 +29,12 @@ const authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             if (!existingUser)
                 return res.status(404).json("User doesnt exist");
             const user = existingUser.toJSON();
+            console.log("user is ", user);
             req.user = user;
             next();
         }
         catch (error) {
-            res.status(404).json("You are not authorized");
+            res.status(404).json(error);
         }
     }
     catch (error) {
