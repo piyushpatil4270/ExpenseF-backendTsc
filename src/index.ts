@@ -29,7 +29,7 @@ app.use(cors())
 app.use(bodyParser({extended:true}))
 
 app.get("/",(req,res,next)=>{
-    res.json("server started....")
+    res.json("server started and we are live....")
 })
 
 
