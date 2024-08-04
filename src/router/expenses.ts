@@ -102,7 +102,7 @@ router.post("/getbyMonth",authenticate,async(req:CustomRequest,res:Response,next
     try {
         if(!req.user) return res.status(404).json("Your are not authorized")
         const userId=req.user.id
-        const body:ExpensebyDate=req.body
+        const body=req.body
         const startMonth:Date=moment.utc(body.date).startOf("month").toDate()
         const endMonth:Date=moment.utc(body.date).endOf("month").toDate()
         const skip:number=(body.page-1)*body.limit
@@ -207,7 +207,7 @@ router.post("/getbyMonthGrouped",authenticate,async(req:CustomRequest,res:Respon
 
 
 
-router.post("/delete/:id",async(req:CustomRequest,res:Response,next:NextFunction)=>{
+router.post("/delete/:id",authenticate,async(req:CustomRequest,res:Response,next:NextFunction)=>{
     try {
         if(!req.user) return res.status(404).json("Your are not authorized")
             const userId=req.user.id
