@@ -24,6 +24,8 @@ const app = (0, express_1.default)();
 const user_1 = __importDefault(require("./models/user"));
 const expenses_2 = __importDefault(require("./models/expenses"));
 const ResetReq_1 = __importDefault(require("./models/ResetReq"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 user_1.default.hasMany(expenses_2.default, { foreignKey: "userId" });
 user_1.default.hasMany(ResetReq_1.default, { foreignKey: "userId" });
 app.set('view engine', 'ejs');
