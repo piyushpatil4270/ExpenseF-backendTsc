@@ -38,7 +38,7 @@ try {
        
       
     } catch (error) {
-        res.status(404).json("You are not authorized")
+        res.status(404).json(error)
     }
 } catch (error) {
     console.log(error)
