@@ -19,6 +19,7 @@ const os_1 = require("os");
 const authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = req.header("Authorization");
+        console.log("Token is ", token);
         if (!token)
             return res.status(404).json("You are not authorized");
         try {

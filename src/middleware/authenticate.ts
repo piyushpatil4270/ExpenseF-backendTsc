@@ -25,6 +25,7 @@ interface CustomRequest extends Request{
 export const authenticate=async(req:CustomRequest,res:Response,next:NextFunction)=>{
 try {
     const token:string|undefined=req.header("Authorization")
+    console.log("Token is ",token)
     if(!token) return res.status(404).json("You are not authorized")
     try {
         const decryptToken=jwt.verify(token,"faksjfklslkfsklf") as JwtPayload||userInfo
